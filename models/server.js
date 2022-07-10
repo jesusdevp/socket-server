@@ -18,16 +18,20 @@ class Server {
 
         
         // Configuracion del socket server
-        this.io = socketio(this.server)
+        this.io = socketio(this.server, {cors: {
+            origin: "*",
+            methods: ["GET", "POST"]
+        }})
 
-        // CORS
-        this.app.use( cors() );
 
     }
 
     middlewares() {
         // Desplegar el directorio publico
         this.app.use(express.static(path.resolve(__dirname, '../public')))
+
+        //Habilitar CORS (esto NO funciona para sockets)
+        this.app.use( cors() );
     }
 
     configurarSockets() {
